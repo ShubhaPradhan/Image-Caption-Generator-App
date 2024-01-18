@@ -4,16 +4,20 @@ import 'dart:io';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
+import 'widgets/result.dart';
+
 class HomeController extends GetxController {
   final pickedImage = File('empty').obs;
   final picker = ImagePicker();
   final isImageError = false.obs;
-  Future pickPhotos(String type) async {
+  Future pickPhotos() async {
     final pickedImg = await picker.pickImage(
       source: ImageSource.gallery,
     );
 
-    pickedImage.value = File(pickedImg!.path);
+    if (pickedImg != null) {
+      pickedImage.value = File(pickedImg.path);
+    }
   }
 
   // camera image picker
@@ -22,7 +26,9 @@ class HomeController extends GetxController {
       source: ImageSource.camera,
     );
 
-    pickedImage.value = File(pickedImg!.path);
+    if (pickedImg != null) {
+      pickedImage.value = File(pickedImg.path);
+    }
   }
 
   bool customValidations() {
@@ -40,10 +46,12 @@ class HomeController extends GetxController {
       log('error');
       return;
     }
+
     sendImageToServer();
   }
 
   void sendImageToServer() async {
     log('sending image to server');
+    Get.to(() => const Result());
   }
 }

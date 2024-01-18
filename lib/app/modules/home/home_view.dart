@@ -16,80 +16,112 @@ class HomeView extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: Column(
-          children: [
-            Row(
-              children: [
-                SizedBox(
-                  width: Adaptive.w(42),
-                  child: CustomImagePicker(
-                    color: Colors.white,
-                    onPressed: () async {
-                      // pick image
-                      await homeController.captureImage();
-                    },
-                    text: "Take Picture",
-                    check: homeController.pickedImage.value.path.toString(),
-                    controller: homeController.pickedImage.value,
-                  ),
-                ),
-                const Spacer(),
-                SizedBox(
-                  width: Adaptive.w(42),
-                  child: CustomImagePicker(
-                    color: Colors.white,
-                    onPressed: () async {
-                      // pick image
-                      await homeController.pickPhotos('council');
-                    },
-                    check: homeController.pickedImage.value.path.toString(),
-                    controller: homeController.pickedImage.value,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Container(
-              height: 20.h,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(
-                  color: Colors.grey,
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: 4.w,
+          ),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 20.h,
+                child: Image.asset(
+                  'assets/images/logo.png',
+                  height: 20.h,
                 ),
               ),
-              child: homeController.pickedImage.value.path.toString() == 'empty'
-                  ? SizedBox(
-                      height: 30,
-                      child: Padding(
-                        padding: const EdgeInsets.all(50.0),
-                        child: Image.asset(
-                          'assets/images/image.png',
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                    )
-                  : Image.file(
-                      homeController.pickedImage.value,
+              const Text(
+                'Captioner',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              Row(
+                children: [
+                  SizedBox(
+                    width: Adaptive.w(42),
+                    child: CustomImagePicker(
+                      color: Colors.black,
+                      onPressed: () async {
+                        // pick image
+                        await homeController.captureImage();
+                        homeController.customValidations();
+                      },
+                      text: "Take Picture",
+                      check: homeController.pickedImage.value.path.toString(),
+                      controller: homeController.pickedImage.value,
                     ),
-            ),
-            homeController.isImageError.value
-                ? CustomError(
-                    text: 'Please upload a photo'.tr,
-                  )
-                : const SizedBox(),
-            CustomElevatedButton(
-              onPressed: () {
-                homeController.onSubmit();
-              },
-              text: "Generate Caption",
-              width: double.infinity,
-              height: 6.h,
-              borderRadius: 10.0,
-            ),
-          ],
+                  ),
+                  const Spacer(),
+                  SizedBox(
+                    width: Adaptive.w(42),
+                    child: CustomImagePicker(
+                      color: Colors.black,
+                      onPressed: () async {
+                        // pick image
+                        await homeController.pickPhotos();
+                        homeController.customValidations();
+                      },
+                      check: homeController.pickedImage.value.path.toString(),
+                      controller: homeController.pickedImage.value,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 2.h,
+              ),
+              Container(
+                height: 20.h,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: Colors.grey,
+                  ),
+                ),
+                child: Obx(
+                  () => homeController.pickedImage.value.path.toString() ==
+                          'empty'
+                      ? SizedBox(
+                          height: 30,
+                          child: Padding(
+                            padding: const EdgeInsets.all(50.0),
+                            child: Image.asset(
+                              'assets/images/image.png',
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        )
+                      : Image.file(
+                          homeController.pickedImage.value,
+                        ),
+                ),
+              ),
+              Obx(
+                () => homeController.isImageError.value
+                    ? CustomError(
+                        text: 'Please upload a photo'.tr,
+                      )
+                    : const SizedBox(),
+              ),
+              SizedBox(
+                height: 2.h,
+              ),
+              CustomElevatedButton(
+                onPressed: () {
+                  homeController.onSubmit();
+                },
+                text: "Generate Caption",
+                width: double.infinity,
+                height: 6.h,
+                borderRadius: 10.0,
+              ),
+            ],
+          ),
         ),
       ),
     );
