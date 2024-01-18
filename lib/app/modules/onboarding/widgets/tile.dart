@@ -19,20 +19,30 @@ class Tile extends StatelessWidget {
       children: [
         Image.asset(
           image,
-          height: 30.h,
+          width: 100.w,
         ),
-        Text(
-          title,
-          style: TextStyle(fontSize: 20.sp),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 5.w),
-          child: Text(
-            subtitles,
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 16.sp),
+        Container(
+          padding: EdgeInsets.symmetric(vertical: 3.h),
+          child: Column(
+            children: [
+              Text(
+                title,
+                style: TextStyle(
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 5.w),
+                child: Text(
+                  subtitles,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 16.sp),
+                ),
+              )
+            ],
           ),
-        )
+        ),
       ],
     );
   }
